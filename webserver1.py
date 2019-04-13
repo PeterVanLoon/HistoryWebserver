@@ -34,16 +34,17 @@ class WebServerHandler(BaseHTTPRequestHandler):
                 return
 
         except IOError:
-            self.send_error(404, 'File Not Found you idiot: %s' % self.path)
+            self.send_error(404, 'File Not Found: %s' % self.path)
 
     def do_POST(self):
         try:
-            self,send_response(301)
+            self.send_response(301)
             self.send_header('Content-type', 'text/html')
             self.end_headers()
-            ctype, pdict = cgi.parse_header(self.headers.getheader('Content-type'))
-            if ctype == 'multipart/form data':
-                fields =cgi.parse_multipart(self, rfile, pdict)
+            ctype, pdict = cgi.parse_header(self.headers.get('Content-type'))
+            pdict['boundary'] = bytes(pdict['boundary'], "utf-8")
+            if ctype == 'multipart/form-data':    # Compare this line with your code - form data -> form-data
+                fields = cgi.parse_multipart(self.rfile, pdict)    # Compare this line with your code - self, rfile -> self.rfile
                 messagecontent = fields.get('message')
             output = ""
             output += "<html><body>"
