@@ -16,19 +16,37 @@ session = DBSession()
 class WebServerHandler(BaseHTTPRequestHandler):
 
     def do_GET(self):
-        try:
+        try:  
+                  # Objective 3 Step 2 - Create /restarants/new page
+            if self.path.endswith("/restaurants/new"):
+                self.send_response(200)
+                self.send_header('Content-type', 'text/html')
+                self.end_headers()
+                output = ""
+                output += "<html><body>"
+                output += "<h1>Make a New Restaurant</h1>"
+                output += "<form method = 'POST' enctype='multipart/form-data' action = '/restaurants/new'>"
+                output += "<input name = 'newRestaurantName' type = 'text' placeholder = 'New Restaurant Name' > "
+                output += "<input type='submit' value='Create'>"
+                output += "</form></body></html>"
+                self.wfile.write(output)
+                return
+
             if self.path.endswith("/restaurants"):
                 restaurants = session.query(Restaurant).all()
                 output = ""
                 self.send_response(200)
                 self.send_header('Content-type', 'text/html')
-                self.end_headers()
-                output = ""                
+                self.end_headers()          
                 output += "<html><body>"
                 for restaurant in restaurants:
                     output += restaurant.name
+                    output += "</br>"
+                    # Objective 2 -- Add Edit and Delete Links
+                    output += "<a href ='#' >Edit </a> "
+                    output += "</br>"
+                    output += "<a href =' #'> Delete </a>"
                     output += "</br></br></br>"
-
                 output += "</body></html>"
                 self.wfile.write(output.encode())
                 print (output)
@@ -37,7 +55,7 @@ class WebServerHandler(BaseHTTPRequestHandler):
         except IOError:
             self.send_error(404, 'File Not Found: %s' % self.path)
 
-    def do_POST(self):
+'''    def do_POST(self):
         try:
             self.send_response(301)
             self.send_header('Content-type', 'text/html')
@@ -57,7 +75,7 @@ class WebServerHandler(BaseHTTPRequestHandler):
             self.wfile.write(output.encode())
             print (output)
         except:
-            pass
+            pass'''
     
 def main():
     try:
