@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
-#from __future__ import unicode_literals
+from __future__ import unicode_literals
 import sys
 import os
-
 from sqlalchemy import Column, ForeignKey, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
@@ -38,6 +37,6 @@ class MenuItem(Base):
            'course'         : self.course,
        }
  ######Insert at end of file#####
-engine = create_engine('sqlite:///restaurantmenu.db')  # It is sqlite not sqllite - use single l instead of double l (ll)
+engine = create_engine('sqlite:///restaurant.db')  # It is sqlite not sqllite - use single l instead of double l (ll)
 
 Base.metadata.create_all(engine)
