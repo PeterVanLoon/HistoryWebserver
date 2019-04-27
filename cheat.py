@@ -1,5 +1,4 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
-import sys
 import cgi
 
 # import CRUD Operations from Lesson 1 ##
@@ -51,7 +50,7 @@ class webServerHandler(BaseHTTPRequestHandler):
                     output += "</form>"
                     output += "</body></html>"
 
-                    self.wfile.write(output.encod())
+                    self.wfile.write(output.encode())
             if self.path.endswith("/delete"):
                 restaurantIDPath = self.path.split("/")[2]
 
@@ -134,7 +133,7 @@ class webServerHandler(BaseHTTPRequestHandler):
 
             if self.path.endswith("/restaurants/new"):
                 ctype, pdict = cgi.parse_header(
-                    self.headers.get('Content-type'))
+                    self.headers.getheader('Content-type'))
                 if ctype == 'multipart/form-data':
                     fields = cgi.parse_multipart(self.rfile, pdict)
                     print (fields)
